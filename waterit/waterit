@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# trap ctrl-c and call ctrl_c()
+trap ctrl_c INT
+
+function ctrl_c() {
+    echo "Trapped CTRL-C"
+    curl http://219.228.147.144:10080/gpio/-1 -s | grep -v "<"
+}
+
+
+if [ $# -gt 1 ] || [ $# -lt 1 ]; then
+    #echo $#
+    echo -e "Usage:\n\twaterit WATER_TIME\t-->  Watering the things for WATER_TIME seconds."
+elif [ $# -gt 0 ]; then
+    #echo $1
+    curl http://219.228.147.144:10080/gpio/$1 -s | grep -v "<"
+    #curl http://219.228.147.144/gpio/1 -s | grep -v "<"
+    sleep $1
+fi
+
+#   if [ $1 == "off" ]; then
+#        curl http://219.228.147.144:10080/gpio/0 -s | grep -v "<"
+#   else
+#        curl http://219.228.147.144:10080/gpio/1 -s | grep -v "<"
+#   fi
+#else
+#   curl http://219.228.147.144/gpio/1 -s | grep -v "<"
+#fi
